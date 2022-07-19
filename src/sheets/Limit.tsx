@@ -1,4 +1,5 @@
 import {useState} from "react";
+import './Limit.css';
 
 function Limit(props: any) {
     const [limit, updateLimit] = useState({
@@ -7,15 +8,15 @@ function Limit(props: any) {
         overdrive: false
     })
     const [overdriveStyle, updateOverdrive] = useState({
-        display: "inline-block",
-        borderLeft: "1px solid black",
         color: "blue"
     })
 
     function newLimit(score: number) {
         const ns = limit.score === score ? score - 1 : score;
         const overdrive = ns > 8;
-        const overdriveColor = overdrive ? 'red' : 'blue';
+        const overdriveColor = overdrive
+            ? '#F00'
+            : '#00F';
         console.log('overdrive: ', overdrive, ' - color: ', overdriveColor);
         updateOverdrive(o => ({...o, color: overdriveColor}));
         return {...limit, score: ns, override: overdrive};
@@ -23,7 +24,7 @@ function Limit(props: any) {
 
     return (
         <div>
-            <div style={{display: "inline-block"}}>
+            <div className={'limit'}>
                 <p>Limit</p>
                 <input type='checkbox'
                        checked={limit.score > 0}
@@ -50,7 +51,7 @@ function Limit(props: any) {
                        checked={limit.score > 7}
                        onChange={() => updateLimit(newLimit(8))}/>
             </div>
-            <div style={overdriveStyle}>
+            <div className={'limit overdrive'} style={overdriveStyle}>
                 <p>Overdrive</p>
                 <input type='checkbox'
                        checked={limit.score > 8}
