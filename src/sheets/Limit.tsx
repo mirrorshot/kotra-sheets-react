@@ -1,8 +1,16 @@
 import {useState} from "react";
 
 function Limit(props: any) {
-    const [limit, updateLimit] = useState({score: 0, overdriveLimit: props.memories.length + 1, overdrive: false})
-    const [overdriveStyle, updateOverdrive] = useState({display: "inline-block", borderLeft: "1px solid black", color: "blue"})
+    const [limit, updateLimit] = useState({
+        score: 0,
+        overdriveLimit: (props.memories ? props.memories : []).length + 1,
+        overdrive: false
+    })
+    const [overdriveStyle, updateOverdrive] = useState({
+        display: "inline-block",
+        borderLeft: "1px solid black",
+        color: "blue"
+    })
 
     function newLimit(score: number) {
         const ns = limit.score === score ? score - 1 : score;

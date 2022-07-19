@@ -1,14 +1,12 @@
 import {useState} from "react";
+import Settable from "./Settable";
 
-function Item(){
+function Item() {
     const [item, updateItem] = useState('');
 
     return (
         <div>
-            <input type='text'
-                   value={item}
-                   onChange={(e) => updateItem(e.target.value)}
-            />
+            <Settable label={'Item'} setValue={updateItem}/>
             <p>Item</p>
         </div>
     );

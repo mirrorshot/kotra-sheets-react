@@ -1,14 +1,12 @@
 import {useState} from "react";
+import Settable from "./Settable";
 
 function Flaw() {
     const [flaw, updateFlaw] = useState('');
 
     return (
         <div>
-            <input type='text'
-                   value={flaw}
-                   onChange={(e) => updateFlaw(e.target.value)}
-            />
+            <Settable label={'Flaw'} setValue={updateFlaw}/>
             <p>Flaw</p>
         </div>
     );

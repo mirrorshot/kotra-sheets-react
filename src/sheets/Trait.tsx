@@ -1,17 +1,6 @@
-import {useState} from "react";
+import Settable from "./Settable";
 
-function Trait() {
+export default function Trait() {
 
-    const [trait, updateTrait] = useState('');
-
-    return (
-        <div>
-            <input type='text'
-                   value={trait}
-                   onChange={(e) => updateTrait(e.target.value)}
-            />
-        </div>
-    );
+    return <Settable label='Trait'/>;
 }
-
-export default Trait;

@@ -1,4 +1,5 @@
 import {useState} from "react";
+import Settable from "./Settable";
 
 function Nemesis() {
 
@@ -6,10 +7,7 @@ function Nemesis() {
 
     return (
         <div>
-            <input type='text'
-                   value={nemesis}
-                   onChange={(e) => updateNemesis(e.target.value)}
-            />
+            <Settable label={'Nemesis'} setValue={updateNemesis}/>
             <p>Nemesis</p>
         </div>
     );

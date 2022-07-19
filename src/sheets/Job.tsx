@@ -1,14 +1,14 @@
 import {useState} from "react";
+import Settable from "./Settable";
 
 function Job() {
     const [job, updateJob] = useState('');
 
     return (
         <div>
-            <input type='text'
-                   value={job}
-                   onChange={(e) => updateJob(e.target.value)}
-            />
+            <Settable
+                label={'Job'}
+                setValue={updateJob}/>
             <p>Job</p>
         </div>
     );

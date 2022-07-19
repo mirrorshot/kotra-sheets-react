@@ -27,7 +27,7 @@ function OneShot() {
             <Nemesis/>
             <Item/>
             <Item/>
-            <Limit memories={[]}/>
+            <Limit/>
         </div>
     );
 }
