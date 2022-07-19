@@ -1,21 +1,40 @@
+import './Settable.css';
+
 import {useState} from "react";
 
 export function Modal(props: any) {
     const [state, update] = useState(props.value);
 
-    function returnValue() {
+    function apply() {
         props.setValue(state);
     }
 
-    function cancel() {
+    function abort() {
         props.abort();
+    }
+
+    function action(e: any) {
+        switch (e.keyCode) {
+            case 13:
+                apply();
+                break;
+            case 27:
+                abort();
+                break;
+        }
     }
 
     return (
         <div>
-            <input type='text' value={state} onChange={e => update(e.target.value)}/>
-            <button onClick={returnValue}>Save</button>
-            <button onClick={cancel}>Cancel</button>
+            <input type='text'
+                   value={state}
+                   onChange={e => update(e.target.value)}
+                   autoFocus={true}
+                   onFocus={e => e.target.select()}
+                   onKeyDown={action}
+            />
+            <button className={'confirm'} onClick={apply}>Save</button>
+            <button className={'abort'} onClick={abort}>Cancel</button>
         </div>
     );
 }
