@@ -7,6 +7,7 @@ function Wound(props: any) {
 
     function setValue(v: string) {
         updateWound(w => ({...w, wound: v}))
+        if(props.setWound) props.setWound(v);
     }
 
     return (
