@@ -1,14 +1,12 @@
-import {useState} from "react";
 import Settable from "./Settable";
 
-function Nemesis() {
-
-    const [nemesis, updateNemesis] = useState('');
-
+function Nemesis(props: {
+    nemesis: string,
+    updateNemesis: Function
+}) {
     return (
         <div>
-            <Settable label={'Nemesis'} setValue={updateNemesis}/>
-            <p>Nemesis</p>
+            <Settable label={'Nemesis'} value={props.nemesis} setValue={props.updateNemesis}/>
         </div>
     );
 }

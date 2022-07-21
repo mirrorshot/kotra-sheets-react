@@ -2,11 +2,15 @@ import './Settable.css';
 
 import {useState} from "react";
 
-export function Modal(props: any) {
+export function Modal(props: {
+    value: string,
+    apply: Function,
+    abort: Function
+}) {
     const [state, update] = useState(props.value);
 
     function apply() {
-        props.setValue(state);
+        props.apply(state);
     }
 
     function abort() {
@@ -25,7 +29,7 @@ export function Modal(props: any) {
     }
 
     return (
-        <div>
+        <div className={'Modal'}>
             <input type='text'
                    value={state}
                    onChange={e => update(e.target.value)}
@@ -39,28 +43,32 @@ export function Modal(props: any) {
     );
 }
 
-export default function Settable(props: any) {
-    const [state, update] = useState({visible: false, text: props.label});
+export default function Settable(props: {
+    label: string,
+    value: string,
+    setValue: Function
+}) {
+    const [visible, update] = useState(false);
 
     function showInput() {
-        update(s => ({...s, visible: true}));
+        update(true);
     }
 
-    function setValue(value: String) {
-        update({visible: false, text: value});
-        if (props.setValue) props.setValue(value);
+    function setValue(value: string) {
+        props.setValue(value);
+        update(false);
     }
 
     function abort() {
-        update(s => ({...s, visible: false}));
+        update(false);
     }
 
     return (
-        state.visible
-            ? <Modal
-                value={state.text}
-                setValue={setValue}
-                abort={abort}/>
-            : <p onClick={showInput}>{state.text}</p>
+        <div className={'Settable'} onDoubleClick={showInput}>
+            {visible
+                ? <Modal value={props.value} apply={setValue} abort={abort}/>
+                : <p className={'Settable'}>{props.value}</p>}
+            <p>{props.label}</p>
+        </div>
     );
 };

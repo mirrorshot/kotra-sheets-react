@@ -1,13 +1,12 @@
-import {useState} from "react";
 import Settable from "./Settable";
 
-function Item() {
-    const [item, updateItem] = useState('');
-
+function Item(props: {
+    item: string,
+    setItem: Function
+}) {
     return (
         <div>
-            <Settable label={'Item'} setValue={updateItem}/>
-            <p>Item</p>
+            <Settable label={'Item'} value={props.item} setValue={props.setItem}/>
         </div>
     );
 }

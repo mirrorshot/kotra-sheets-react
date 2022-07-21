@@ -1,6 +1,10 @@
 import Settable from "./Settable";
 
-export default function Memory(props: any) {
+export default function Memory(props: {
+    memory: string,
+    index: number,
+    setMemory: Function
+}) {
 
     function setMemory(memory: string) {
         props.setMemory(props.index, memory);
@@ -8,8 +12,7 @@ export default function Memory(props: any) {
 
     return (
       <div>
-          <Settable label={'Memory'} setValue={setMemory}/>
-          <p>{props.memory}</p>
+          <Settable label={'Memory'} value={props.memory} setValue={setMemory} />
       </div>
     );
 };

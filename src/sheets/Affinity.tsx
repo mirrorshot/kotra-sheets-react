@@ -1,25 +1,21 @@
-import {useState} from "react";
 import Settable from "./Settable";
 import Score from "./Score";
 
-function Affinity() {
-    const [affinity, updateAffinity] = useState({character: '', score: 0})
-
-    function setAffinity(v: string){
-        updateAffinity(a => ({...a, character: v}));
+export default function Affinity(
+    props: {
+        affinity: {
+            value: string,
+            score: number
+        },
+        updateAffinity: Function,
+        updateScore: Function
     }
-
-    function setScore(s: number) {
-        updateAffinity(a => ({...a, score: s}))
-    }
+) {
 
     return (
         <div>
-            <Settable label={'Affinity'} setValue={setAffinity} />
-            <Score score={0} setValue={setScore}/>
-            <p>Affinity</p>
+            <Settable label={'Affinity'} value={props.affinity.value} setValue={props.updateAffinity} />
+            <Score score={props.affinity.score} min={0} max={10} step={1} setValue={props.updateScore}/>
         </div>
     );
 }
-
-export default Affinity;

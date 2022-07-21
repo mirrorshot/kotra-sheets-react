@@ -29,7 +29,7 @@ export default function Character() {
 
     return (
         <div className="OneShot">
-            <Wound label='Name'/>
+            {/*<Wound label='Name'/>
             <Wound label='Core'/>
             <Wound label='Lineage'/>
             <Wound label='Soul'/>
@@ -49,7 +49,7 @@ export default function Character() {
             <Nemesis/>
             <Item/>
             <Item/>
-            <Limit memories={character.memories}/>
+            <Limit memories={character.memories}/>*/}
         </div>
     );
 }

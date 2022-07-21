@@ -1,15 +1,16 @@
-import {useState} from "react";
 import Settable from "./Settable";
 
-function Job() {
-    const [job, updateJob] = useState('');
+function Job(props: {
+    job: string,
+    updateJob: Function
+}) {
 
     return (
         <div>
             <Settable
                 label={'Job'}
-                setValue={updateJob}/>
-            <p>Job</p>
+                value={props.job}
+                setValue={props.updateJob}/>
         </div>
     );
 }

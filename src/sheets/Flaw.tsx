@@ -1,13 +1,13 @@
-import {useState} from "react";
 import Settable from "./Settable";
 
-function Flaw() {
-    const [flaw, updateFlaw] = useState('');
+function Flaw(props: {
+    flaw: string,
+    updateFlaw: Function
+}) {
 
     return (
         <div>
-            <Settable label={'Flaw'} setValue={updateFlaw}/>
-            <p>Flaw</p>
+            <Settable label={'Flaw'} value={props.flaw} setValue={props.updateFlaw}/>
         </div>
     );
 }

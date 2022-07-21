@@ -11,3 +11,16 @@ button.confirm{
 button.abort{
     background-color: lightcoral;
 }
+
+div.Settable {
+    cursor: alias;
+}
+
+div.Modal {
+    display: block;
+    z-index: 99;
+    background-color: #282c34;
+    height: 100%;
+    width: 100%;
+    align-content: center;
+}
