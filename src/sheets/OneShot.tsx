@@ -9,6 +9,7 @@ import Nemesis from "./Nemesis";
 import Limit from "./Limit";
 import Legacy from "./Legacy";
 import SaveLoad from "./SaveLoad";
+import Technique from "./Technique";
 
 export default function OneShot() {
 
@@ -19,6 +20,7 @@ export default function OneShot() {
         soul: {value: '', wounded: false},
         traits: ['', '', '', ''],
         legacy: '',
+        techniques: ['', '', ''],
         job: '',
         affinity: {value: '', score: 0},
         limit: {score: 0, overdrive: false},
@@ -51,6 +53,11 @@ export default function OneShot() {
 
     function setLineage(v: string) {
         update({...state, lineage: {...state.lineage, value: v}});
+    }
+
+    function setTechnique(v: string, index: number) {
+        state.techniques[index] = v;
+        update(state);
     }
 
     function woundLineage(w: boolean) {
@@ -101,6 +108,9 @@ export default function OneShot() {
             <Legacy
                 legacy={state.legacy}
                 setLegacy={(v: string) => update({...state, legacy: v})}/>
+            <Technique value={state.techniques[0]} setValue={(v: string) => setTechnique(v, 0)}/>
+            <Technique value={state.techniques[1]} setValue={(v: string) => setTechnique(v, 1)}/>
+            <Technique value={state.techniques[2]} setValue={(v: string) => setTechnique(v, 2)}/>
         </div>
     );
 }

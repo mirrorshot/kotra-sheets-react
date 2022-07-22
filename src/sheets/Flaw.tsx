@@ -1,4 +1,5 @@
 import Settable from "./Settable";
+import './Flaw.css';
 
 function Flaw(props: {
     flaw: string,
@@ -6,7 +7,7 @@ function Flaw(props: {
 }) {
 
     return (
-        <div>
+        <div className={'Flaw'}>
             <Settable label={'Flaw'} value={props.flaw} setValue={props.updateFlaw}/>
         </div>
     );

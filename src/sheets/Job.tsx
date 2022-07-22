@@ -1,4 +1,5 @@
 import Settable from "./Settable";
+import './Job.css';
 
 function Job(props: {
     job: string,
@@ -6,7 +7,7 @@ function Job(props: {
 }) {
 
     return (
-        <div>
+        <div className={'Job'}>
             <Settable
                 label={'Job'}
                 value={props.job}
