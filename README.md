@@ -1,7 +1,7 @@
 # kotra-sheets
 Sheets manager with recovarable state for "Knights of the Round: Accademy", the RPG from FumbleGDR.
 
-Exemples of the sheets (oneshot, character, campaign, etc) are available [https://docs.google.com/presentation/d/1tPaXTAgDvReK7kws2kIClWNdWhmmB7AoJznV3SuZ5-Q/](here).
+Exemples of the sheets (oneshot, character, campaign, etc) are available [here](https://docs.google.com/presentation/d/1tPaXTAgDvReK7kws2kIClWNdWhmmB7AoJznV3SuZ5-Q/).
 
 # Getting Started with Create React App
 
