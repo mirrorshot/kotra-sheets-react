@@ -1,5 +1,4 @@
 import React, {useState} from "react";
-import Converter from "../Converter";
 import Wound from "./Wound";
 import Job from "./Job";
 import Affinity from "./Affinity";
@@ -9,8 +8,9 @@ import Item from "./Item";
 import Nemesis from "./Nemesis";
 import Limit from "./Limit";
 import Legacy from "./Legacy";
+import SaveLoad from "./SaveLoad";
 
-function OneShot() {
+export default function OneShot() {
 
     const [state, update] = useState({
         name: {value: '', wounded: false},
@@ -82,7 +82,7 @@ function OneShot() {
 
     return (
         <div className="OneShot">
-            <button onClick={() => Converter.compress(state)}>Save</button>
+            <SaveLoad data={state} load={update}/>
             <Wound label='Name' wound={state.name} setWound={setName} setWounded={woundName}/>
             <Wound label='Core' wound={state.core} setWound={setCore} setWounded={woundCore}/>
             <Wound label='Lineage' wound={state.lineage} setWound={setLineage} setWounded={woundLineage}/>
@@ -104,5 +104,3 @@ function OneShot() {
         </div>
     );
 }
-
-export default OneShot;
