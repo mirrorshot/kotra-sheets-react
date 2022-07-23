@@ -1,7 +1,7 @@
 // @ts-ignore
 import LZString from 'lz-string';
 
-class Converter {
+export default class Converter {
     static compress(data: any): string {
         return LZString.compressToBase64(this.toJson(data));
     }
@@ -17,7 +17,4 @@ class Converter {
     static toJson(data: any): string {
         return JSON.stringify(data);
     }
-
 }
-
-export default Converter;
