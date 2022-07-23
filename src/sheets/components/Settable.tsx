@@ -27,7 +27,7 @@ export default function Settable(props: {
     return (
         <div className={'Settable'} onDoubleClick={showInput}>
             {visible
-                ? <Modal value={props.value} apply={setValue} abort={abort}/>
+                ? <Modal action={'Save'} value={props.value} apply={setValue} abort={abort}/>
                 : <p className={'Settable'}>{props.value}</p>}
             <p>{props.label}</p>
         </div>

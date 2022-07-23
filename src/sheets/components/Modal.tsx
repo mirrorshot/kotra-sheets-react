@@ -3,6 +3,7 @@ import './Modal.css';
 
 export default function Modal(props: {
     value: string,
+    action?: string,
     apply: Function,
     abort: Function,
     type?: 'text' | 'textarea' | undefined
@@ -10,7 +11,7 @@ export default function Modal(props: {
     const [state, update] = useState(props.value);
 
     function apply() {
-        props.apply(state);
+        if (props.apply) props.apply(state);
     }
 
     function abort() {
@@ -28,6 +29,8 @@ export default function Modal(props: {
         }
     }
 
+    console.log('apply: ', props.apply.toString(), ' - noop: ', noop.toString());
+
     return (
         <div className={'Modal'}>
             <div className={'Content'}>
@@ -39,10 +42,16 @@ export default function Modal(props: {
                        onKeyDown={action}
                 />
                 <p/>
-                {props.apply !== props.abort ?
-                    <button type={"submit"} className={'confirm'} onClick={apply}>Save</button> : null}
-                <button className={'abort'} onClick={abort}>Cancel</button>
+                {props.apply.toString() !== noop.toString()
+                    ? <div>
+                        <button type={"submit"} className={'confirm'} onClick={apply}>{props.action ? props.action: 'Apply'}</button>
+                        <button className={'abort'} onClick={abort}>Cancel</button>
+                    </div>
+                    : <button onClick={abort}>{props.action ? props.action: 'Done'}</button>}
             </div>
         </div>
     );
 };
+
+export function noop(_?: any | undefined) {
+}
