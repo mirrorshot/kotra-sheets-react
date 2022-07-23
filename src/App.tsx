@@ -33,6 +33,13 @@ function App() {
                     <p>TODO your places sheet here</p>
                 </TabPanel>
             </Tabs>
+            <a
+            style={{
+                color: "000"
+            }}
+                href={'https://github.com/mirrorshot/kotra-sheets-react/'}
+                target={"_blank"}
+            >Contribute on GitHub</a>
         </div>
     );
 }
