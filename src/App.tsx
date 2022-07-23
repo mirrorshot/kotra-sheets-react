@@ -34,11 +34,12 @@ function App() {
                 </TabPanel>
             </Tabs>
             <a
-            style={{
-                color: "000"
-            }}
+                style={{
+                    color: "000"
+                }}
                 href={'https://github.com/mirrorshot/kotra-sheets-react/'}
                 target={"_blank"}
+                rel={'noreferrer'}
             >Contribute on GitHub</a>
         </div>
     );
