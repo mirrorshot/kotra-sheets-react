@@ -3,11 +3,11 @@ import Settable from "./Settable";
 import './Wound.css';
 
 function Wound(props: {
+    label: string,
     wound: {
         value: string,
         wounded: boolean
     },
-    label: string,
     setWound: Function,
     setWounded: Function
 }) {

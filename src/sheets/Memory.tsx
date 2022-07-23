@@ -1,18 +1,26 @@
 import Settable from "./Settable";
+import './Memory.css';
 
 export default function Memory(props: {
-    memory: string,
-    index: number,
+    memory?: {
+        value: string,
+        consumed: boolean
+    },
     setMemory: Function
 }) {
 
-    function setMemory(memory: string) {
-        props.setMemory(props.index, memory);
-    }
-
     return (
-      <div>
-          <Settable label={'Memory'} value={props.memory} setValue={setMemory} />
-      </div>
+        <div className={'Memory'}>
+            <Settable label={'Memory'}
+                      value={props.memory ? props.memory.value : ''}
+                      setValue={(v: string) => props.setMemory({...props.memory, value: v})}/>
+            <input type={'checkbox'}
+                   disabled={props.memory === undefined}
+                   checked={props.memory?.consumed}
+                   onClick={() => props.setMemory({
+                       ...props.memory,
+                       consumed: props.memory ? !props.memory.consumed : false
+                   })}/>
+        </div>
     );
 };

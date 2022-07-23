@@ -3,7 +3,13 @@ div.Name {
     color: #3D84C5;
 }
 
-div.Core,.Lineage,.Soul {
+div.Core, .Lineage, .Soul {
     border: .1em #980001 solid;
     color: #980001;
 }
+
+div.Knight, .Frame {
+    color: #3d84c5;
+    border: #3d84c5 dashed .1em;
+}
+

@@ -10,6 +10,7 @@ import Limit from "./Limit";
 import Legacy from "./Legacy";
 import SaveLoad from "./SaveLoad";
 import Technique from "./Technique";
+import Ability from "./Ability";
 
 export default function OneShot() {
 
@@ -22,6 +23,9 @@ export default function OneShot() {
         legacy: '',
         techniques: ['', '', ''],
         job: '',
+        knight: {value: '', wounded: false},
+        frame: {value: '', wounded: false},
+        ability: '',
         affinity: {value: '', score: 0},
         limit: {score: 0, overdrive: false},
         itemLeft: '',
@@ -72,6 +76,22 @@ export default function OneShot() {
         update({...state, soul: {...state.soul, wounded: w}});
     }
 
+    function setKnight(v: string) {
+        update({...state, knight: {...state.knight, value: v}});
+    }
+
+    function woundKnight(w: boolean) {
+        update({...state, knight: {...state.knight, wounded: w}});
+    }
+
+    function setFrame(v: string) {
+        update({...state, frame: {...state.frame, value: v}});
+    }
+
+    function woundFrame(w: boolean) {
+        update({...state, frame: {...state.frame, wounded: w}});
+    }
+
     function setAffinity(v: string) {
         update({...state, affinity: {...state.affinity, value: v}});
     }
@@ -95,6 +115,9 @@ export default function OneShot() {
             <Wound label='Lineage' wound={state.lineage} setWound={setLineage} setWounded={woundLineage}/>
             <Wound label='Soul' wound={state.soul} setWound={setSoul} setWounded={woundSoul}/>
             <Job job={state.job} updateJob={(j: string) => update({...state, job: j})}/>
+            <Wound label={'Knight'} wound={state.knight} setWound={setKnight} setWounded={woundKnight}/>
+            <Wound label={'Frame'} wound={state.frame} setWound={setFrame} setWounded={woundFrame}/>
+            <Ability value={state.ability} setValue={(v: string) => update({...state, ability: v})} />
             <Affinity affinity={state.affinity} updateAffinity={setAffinity} updateScore={setAffinityScore}/>
             <Trait trait={state.traits[0]} setValue={(v: string) => setTrait(v, 0)}/>
             <Trait trait={state.traits[1]} setValue={(v: string) => setTrait(v, 1)}/>
