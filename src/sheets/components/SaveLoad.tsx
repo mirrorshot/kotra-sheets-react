@@ -1,6 +1,6 @@
 import React, {useState} from "react";
-import Converter from "../Converter";
-import {Modal} from "./Settable";
+import Converter from "../../Converter";
+import Modal from "./Modal";
 
 export default function SaveLoad(props: {
     data: any,
@@ -18,14 +18,15 @@ export default function SaveLoad(props: {
     }
 
     function load() {
-        update({...state, action: (v: string) => props.load(Converter.extract(v)), visible: true});
+        update({...state, content: '', action: (v: string) => props.load(Converter.extract(v)), visible: true});
     }
 
     function fromJson() {
-        update({...state, action: (v: string) => props.load(Converter.fromJson(v)), visible: true});
+        update({...state, content: '', action: (v: string) => props.load(Converter.fromJson(v)), visible: true});
     }
 
-    function abort(v?: any): void {
+    function abort(v?: any | undefined): void {
+        console.log('aborted with: ', v);
         update({...state, visible: false});
     }
 

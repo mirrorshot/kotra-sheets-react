@@ -1,0 +1,35 @@
+
+div.Modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    display: block;
+    z-index: 99;
+    background-color: #282c34AA;
+    align-content: center;
+}
+
+div.Modal .Content {
+    position: fixed;
+    width: 80%;
+    height: auto;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+button {
+    margin-left: .2em;
+    border: none;
+    font-weight: bold;
+}
+
+button.confirm {
+    background-color: darkseagreen;
+}
+
+button.abort {
+    background-color: lightcoral;
+}

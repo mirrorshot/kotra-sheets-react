@@ -1,17 +1,17 @@
 import React, {useState} from "react";
-import Wound from "./Wound";
-import Job from "./Job";
-import Affinity from "./Affinity";
-import Trait from "./Trait";
-import Flaw from "./Flaw";
-import Item from "./Item";
-import Nemesis from "./Nemesis";
-import Limit from "./Limit";
-import Memory from "./Memory";
-import SaveLoad from "./SaveLoad";
-import Legacy from "./Legacy";
-import Technique from "./Technique";
-import Ability from "./Ability";
+import Wound from "./components/Wound";
+import Job from "./components/Job";
+import Affinity from "./components/Affinity";
+import Trait from "./components/Trait";
+import Flaw from "./components/Flaw";
+import Item from "./components/Item";
+import Nemesis from "./components/Nemesis";
+import Limit from "./components/Limit";
+import Memory from "./components/Memory";
+import SaveLoad from "./components/SaveLoad";
+import Legacy from "./components/Legacy";
+import Technique from "./components/Technique";
+import Ability from "./components/Ability";
 
 export default function Character(props: {
     name?: { value: string | '', wounded: boolean | false } | { value: '', wounded: false },
