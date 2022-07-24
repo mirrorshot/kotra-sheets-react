@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import Wound from "./components/Wound";
+import Wound, {WoundData, toWound} from "./components/Wound";
 import Job from "./components/Job";
 import Affinity from "./components/Affinity";
 import Trait from "./components/Trait";
@@ -7,53 +7,103 @@ import Flaw from "./components/Flaw";
 import Item from "./components/Item";
 import Nemesis from "./components/Nemesis";
 import Limit from "./components/Limit";
-import Memory from "./components/Memory";
+import Memory, {MemoryData, toMemory} from "./components/Memory";
 import SaveLoad from "./components/SaveLoad";
 import Legacy from "./components/Legacy";
 import Technique from "./components/Technique";
 import Ability from "./components/Ability";
 
-export default function Character(props: {
-    name?: { value: string | '', wounded: boolean | false } | { value: '', wounded: false },
-    core?: { value: string | '', wounded: boolean | false } | { value: '', wounded: false },
-    lineage?: { value: string | '', wounded: boolean | false } | { value: '', wounded: false },
-    soul?: { value: string | '', wounded: boolean | false } | { value: '', wounded: false },
+export function toCharacter(input: CharacterSheetInput): CharacterSheet {
+    return {
+        name: toWound(input.name),
+        core: toWound(input.core),
+        lineage: toWound(input.lineage),
+        soul: toWound(input.soul),
+        traits: input.traits
+            ? [...input.traits].fill('', input.traits.length, 10)
+            : Array(10).fill(''),
+        legacy: input.legacy
+            ? input.legacy
+            : '',
+        techniques: input.techniques
+            ? [...input.techniques].fill('', input.techniques.length, 8)
+            : Array(8).fill(''),
+        memories: input.memories
+            ? input.memories.map(toMemory)
+            : Array(3).fill(undefined),
+        jobs: input.jobs
+            ? input.jobs
+            : ['', ''],
+        knight: toWound(input.knight),
+        frame: toWound(input.frame),
+        abilities: input.abilities
+            ? input.abilities
+            : ['', ''],
+        affinities: input.affinities
+            ? [...input.affinities].fill({value: '', score: 0}, input.affinities.length, 2)
+            : Array(2).fill({
+                value: '',
+                score: 0
+            }),
+        limit: input.limit
+            ? {
+                score: input.limit.score,
+                overdrive: input.limit.overdrive !== undefined ? input.limit.overdrive : input.limit.score > 8
+            }
+            : {score: 0, overdrive: false},
+        itemLeft: input.itemLeft ? input.itemLeft : '',
+        itemRight: input.itemRight ? input.itemRight : '',
+        flaw: input.flaw ? input.flaw : '',
+        nemesis: input.nemesis ? input.nemesis : ''
+    };
+}
+
+export type CharacterSheetInput = {
+    name?: { value: string, wounded?: boolean | false } | { value: '', wounded: false },
+    core?: { value: string, wounded?: boolean | false } | { value: '', wounded: false },
+    lineage?: { value: string, wounded?: boolean | false } | { value: '', wounded: false },
+    soul?: { value: string, wounded?: boolean | false } | { value: '', wounded: false },
     traits?: Array<string> | [],
     legacy?: string | '',
     techniques?: Array<string> | [],
-    memories?: Array<{ value: string, consumed: boolean }> | [undefined, undefined, undefined],
+    memories?: Array<{ value: string, consumed?: boolean | false }> | [undefined, undefined, undefined],
     jobs?: Array<string> | [],
-    knight?: { value: string | '', wounded: boolean | false } | { value: '', wounded: false },
-    frame?: { value: string | '', wounded: boolean | false } | { value: '', wounded: false },
+    knight?: { value: string, wounded?: boolean | false } | { value: '', wounded: false },
+    frame?: { value: string, wounded?: boolean | false } | { value: '', wounded: false },
     abilities?: Array<string> | [],
     affinities?: Array<{ value: string | '', score: number | 0 }>,
-    limit?: { score: number | 0, overdrive: boolean | false } | { score: 0, overdrive: false },
+    limit?: { score: number | 0, overdrive?: boolean | false } | { score: 0, overdrive: false },
     itemLeft?: string | '',
     itemRight?: string | '',
     flaw?: string | '',
-    nemesis?: string | ''
-}) {
+    nemesis?: string | '',
+    sheet?: CharacterSheet | undefined
+};
 
-    const [state, update] = useState({
-        name: props.name ? props.name : {value: '', wounded: false},
-        core: props.core ? props.core : {value: '', wounded: false},
-        lineage: props.lineage ? props.lineage : {value: '', wounded: false},
-        soul: props.soul ? props.soul : {value: '', wounded: false},
-        traits: props.traits ? props.traits : [],
-        legacy: props.legacy ? props.legacy : '',
-        techniques: props.techniques ? props.techniques : [],
-        memories: props.memories ? props.memories : [undefined, undefined, undefined],
-        jobs: props.jobs ? props.jobs : [],
-        knight: props.knight ? props.knight : {value: '', wounded: false},
-        frame: props.frame ? props.frame : {value: '', wounded: false},
-        abilities: props.abilities ? props.abilities : [],
-        affinities: props.affinities ? props.affinities : [{value: '', score: 0}, {value: '', score: 0}],
-        limit: props.limit ? props.limit : {score: 0, overdrive: false},
-        itemLeft: props.itemLeft ? props.itemLeft : '',
-        itemRight: props.itemRight ? props.itemRight : '',
-        flaw: props.flaw ? props.flaw : '',
-        nemesis: props.nemesis ? props.nemesis : ''
-    });
+export type CharacterSheet = {
+    name: WoundData,
+    core: WoundData,
+    lineage: WoundData,
+    soul: WoundData,
+    traits: Array<string>,
+    legacy: string,
+    techniques: Array<string>,
+    memories: Array<MemoryData>,
+    jobs: Array<string> | [],
+    knight: WoundData,
+    frame: WoundData,
+    abilities: Array<string>,
+    affinities: Array<{ value: string, score: number }>,
+    limit: { score: number, overdrive: boolean },
+    itemLeft: string,
+    itemRight: string,
+    flaw: string,
+    nemesis: string
+};
+
+export default function Character(props: CharacterSheetInput) {
+
+    const [state, update] = useState(props.sheet ? props.sheet : toCharacter(props));
 
     function setTrait(value: string, index: number) {
         const traits = state.traits;
@@ -137,7 +187,7 @@ export default function Character(props: {
         update({...state, affinities: affinities});
     }
 
-    function setMemory(m: { value: string, consumed: boolean }, index: number) {
+    function setMemory(m: MemoryData, index: number) {
         const memories = state.memories;
         memories[index] = m;
         update({...state, memories: memories});
@@ -150,47 +200,8 @@ export default function Character(props: {
         update({...state, limit: l})
     }
 
-    function load(loaded: {
-        name?: { value: string | '', wounded: boolean | false },
-        core?: { value: string | '', wounded: boolean | false },
-        lineage?: { value: string | '', wounded: boolean | false },
-        soul?: { value: string | '', wounded: boolean | false },
-        traits?: Array<string>,
-        legacy?: string,
-        techniques?: Array<string>,
-        memories?: Array<{ value: string, consumed: boolean }>,
-        jobs?: Array<string>,
-        knight?: { value: string | '', wounded: boolean | false },
-        frame?: { value: string | '', wounded: boolean | false },
-        abilities?: Array<string>,
-        affinities?: Array<{ value: string | '', score: number | 0 }>,
-        limit?: { score: number | 0, overdrive: boolean | false },
-        itemLeft?: string,
-        itemRight?: string,
-        flaw?: string
-        nemesis?: string
-    }) {
-        const data = {
-            name: loaded.name ? loaded.name : {value: '', wounded: false},
-            core: loaded.core ? loaded.core : {value: '', wounded: false},
-            lineage: loaded.lineage ? loaded.lineage : {value: '', wounded: false},
-            soul: loaded.soul ? loaded.soul : {value: '', wounded: false},
-            traits: loaded.traits ? loaded.traits : [],
-            legacy: loaded.legacy ? loaded.legacy : '',
-            techniques: loaded.techniques ? loaded.techniques : [],
-            memories: loaded.memories ? loaded.memories : [undefined, undefined, undefined],
-            jobs: loaded.jobs ? loaded.jobs : [],
-            knight: loaded.knight ? loaded.knight : {value: '', wounded: false},
-            frame: loaded.frame ? loaded.frame : {value: '', wounded: false},
-            abilities: loaded.abilities ? loaded.abilities : [],
-            affinities: loaded.affinities ? loaded.affinities : [{value: '', score: 0}, {value: '', score: 0}],
-            limit: loaded.limit ? loaded.limit : {score: 0, overdrive: false},
-            itemLeft: loaded.itemLeft ? loaded.itemLeft : '',
-            itemRight: loaded.itemRight ? loaded.itemRight : '',
-            flaw: loaded.flaw ? loaded.flaw : '',
-            nemesis: loaded.nemesis ? loaded.nemesis : ''
-        };
-        update(data);
+    function load(loaded: CharacterSheetInput) {
+        update(toCharacter(loaded));
     }
 
     return (
@@ -200,32 +211,26 @@ export default function Character(props: {
             <Wound label='Core' wound={state.core} setWound={setCore} setWounded={woundCore}/>
             <Wound label='Lineage' wound={state.lineage} setWound={setLineage} setWounded={woundLineage}/>
             <Wound label='Soul' wound={state.soul} setWound={setSoul} setWounded={woundSoul}/>
-            <Job job={state.jobs[0]} updateJob={(j: string) => setJob(j, 0)}/>
-            <Job job={state.jobs[1]} updateJob={(j: string) => setJob(j, 1)}/>
-            <Wound label={'Knight'} wound={state.knight}
-                   setWound={setKnight}
-                   setWounded={woundKnight}/>
-            <Wound label={'Frame'} wound={state.frame}
-                   setWound={setFrame}
-                   setWounded={woundFrame}/>
-            <Ability value={state.abilities[0]}
-                     setValue={(v: string) => setAbility(v, 0)}/>
-            <Ability value={state.abilities[1]}
-                     setValue={(v: string) => setAbility(v, 1)}/>
-            <Affinity affinity={state.affinities[0]}
-                      updateAffinity={(v: string) => setAffinity(v, 0)}
-                      updateScore={(s: number) => setAffinityScore(s, 0)}/>
-            <Affinity affinity={state.affinities[1]}
-                      updateAffinity={(v: string) => setAffinity(v, 1)}
-                      updateScore={(s: number) => setAffinityScore(s, 1)}/>
-            {[...Array(10)]
-                .map((_, i) => <Trait key={i}
-                                      trait={state.traits[i]}
+            {[...state.jobs]
+                .map((j, i) => < Job key={i} job={j} updateJob={(j: string) => setJob(j, i)}/>)
+            }
+            <Wound label={'Knight'} wound={state.knight} setWound={setKnight} setWounded={woundKnight}/>
+            <Wound label={'Frame'} wound={state.frame} setWound={setFrame} setWounded={woundFrame}/>
+            {[...state.abilities]
+                .map((a, i) => <Ability key={i} value={a}
+                                        setValue={(v: string) => setAbility(v, i)}/>)}
+            {[...state.affinities]
+                .map((a, i) => <Affinity key={i} affinity={a}
+                                         updateAffinity={(v: string) => setAffinity(v, i)}
+                                         updateScore={(s: number) => setAffinityScore(s, i)}/>)}
+            {[...state.traits]
+                .map((t, i) => <Trait key={i}
+                                      trait={t}
                                       setValue={(v: string) => setTrait(v, i)}/>)}
-            {[...Array(3)]
-                .map((_, i) => <Memory key={i}
-                                       memory={state.memories[i]}
-                                       setMemory={(m: { value: string, consumed: boolean }) => setMemory(m, i)}/>)}
+            {[...state.memories]
+                .map((m, i) => <Memory key={i}
+                                       memory={m}
+                                       setMemory={(m: MemoryData) => setMemory(m, i)}/>)}
             <Flaw flaw={state.flaw} updateFlaw={(f: string) => update({...state, flaw: f})}/>
             <Nemesis nemesis={state.nemesis} updateNemesis={(n: string) => update({...state, nemesis: n})}/>
             <Item item={state.itemLeft} setItem={(i: string) => update({...state, itemLeft: i})}/>
@@ -235,10 +240,10 @@ export default function Character(props: {
                 legacy={state.legacy}
                 setLegacy={(v: string) => update({...state, legacy: v})}/>
 
-            {[...Array(8)]
-                .map((_, i) => <Technique
+            {[...state.techniques]
+                .map((t, i) => <Technique
                     key={i}
-                    value={state.techniques[i]}
+                    value={t}
                     setValue={(v: string) => setTechnique(v, i)}/>)}
         </div>
     );
