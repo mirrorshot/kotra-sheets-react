@@ -2,12 +2,20 @@ import {useState} from "react";
 import Settable from "./Settable";
 import './Wound.css';
 
-function Wound(props: {
+export type WoundData = {
+    value: string,
+    wounded: boolean
+};
+
+export function toWound(w?: { value: string, wounded?: boolean }): WoundData {
+    return w
+        ? {...w, wounded: w.wounded ? w.wounded : false}
+        : {value: '', wounded: false}
+}
+
+export default function Wound(props: {
     label: string,
-    wound: {
-        value: string,
-        wounded: boolean
-    },
+    wound: WoundData,
     setWound: Function,
     setWounded: Function
 }) {
@@ -34,5 +42,3 @@ function Wound(props: {
         </div>
     );
 }
-
-export default Wound;
