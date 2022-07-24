@@ -1,11 +1,19 @@
 import Settable from "./Settable";
 import './Memory.css';
 
+export function toMemory(m?: { value: string, consumed?: boolean }): MemoryData {
+    return m
+        ? {...m, consumed: m.consumed !== undefined ? m.consumed : false}
+        : undefined;
+}
+
+export type MemoryData = {
+    value: string,
+    consumed: boolean
+} | undefined;
+
 export default function Memory(props: {
-    memory?: {
-        value: string,
-        consumed: boolean
-    },
+    memory: MemoryData,
     setMemory: Function
 }) {
 
