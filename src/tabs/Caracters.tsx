@@ -29,23 +29,24 @@ export default function Characters(props: CharactersProps) {
     return (
         <div>
             {visible
-                ? <Modal type={'text'} value={'Name'} action={'Create'} apply={addCharacter}
+                ? <Modal type={'text'}
+                         value={'Name'}
+                         action={'Create'}
+                         apply={addCharacter}
                          abort={() => commute(false)}/>
-                : <Tabs>
-                    <TabList>
-                        {[...props.characters]
-                            .map((c, i) => <Tab>
-                                {c.name.value}
-                                <button onClick={() => removeCharacter(i)}>x</button>
-                            </Tab>)}
-                        <Tab>
-                            <button onClick={createCharacter}>+</button>
-                        </Tab>
-                    </TabList>
+                : null}
+            <Tabs>
+                <TabList>
                     {[...props.characters]
-                        .map((c, i) => <TabPanel><Character key={i} sheet={c}/></TabPanel>)}
-                </Tabs>
-            }
+                        .map((c, i) => <Tab key={i}>
+                            {c.name.value}
+                            <button onClick={() => removeCharacter(i)}>x</button>
+                        </Tab>)}
+                    <button onClick={createCharacter}>+</button>
+                </TabList>
+                {[...props.characters]
+                    .map((c, i) => <TabPanel key={i}><Character key={i} sheet={c}/></TabPanel>)}
+            </Tabs>
         </div>
     );
 };
