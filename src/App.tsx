@@ -3,12 +3,8 @@ import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import './App.css';
 import OneShot from "./sheets/OneShot";
-import Character, {CharacterSheet, toCharacter} from "./sheets/Character";
+import {CharacterSheet, toCharacter} from "./sheets/Character";
 import Characters from "./tabs/Caracters";
-
-type AppState = {
-
-}
 
 function App() {
 
