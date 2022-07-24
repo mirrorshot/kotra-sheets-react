@@ -10,7 +10,7 @@ function App() {
 
     const [state, update] = useState({
         oneShots: [],
-        characters:  [toCharacter({name: {value: 'Arthias'}})],
+        characters: [toCharacter({name: {value: 'Arthias'}})],
         enemies: [],
         places: [],
         campaign: {}
@@ -31,9 +31,13 @@ function App() {
     return (
         <div className="App">
             <header className="KoTR:A Sheets">
-                <p>
-                    KoTR:A sheets manager
-                </p>
+                <h1>
+                    KoTR:A Curriculum
+                </h1>
+                <p>Digital curriculum for <a href={'https://www.fumblegdr.it/products/kotra-corebook'}
+                                             target={'_blank'}
+                                             rel={'noreferrer'}
+                >Knights of the Round: Academy</a></p>
             </header>
             <Tabs>
                 <TabList>
@@ -55,13 +59,9 @@ function App() {
                     <p>TODO your places sheet here</p>
                 </TabPanel>
             </Tabs>
-            <a
-                style={{
-                    color: "000"
-                }}
-                href={'https://github.com/mirrorshot/kotra-sheets-react/'}
-                target={"_blank"}
-                rel={'noreferrer'}
+            <a href={'https://github.com/mirrorshot/kotra-sheets-react/'}
+               target={"_blank"}
+               rel={'noreferrer'}
             >Contribute on GitHub</a>
         </div>
     );

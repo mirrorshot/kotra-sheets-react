@@ -29,8 +29,6 @@ export default function Modal(props: {
         }
     }
 
-    console.log('apply: ', props.apply.toString(), ' - noop: ', noop.toString());
-
     return (
         <div className={'Modal'}>
             <div className={'Content'}>
