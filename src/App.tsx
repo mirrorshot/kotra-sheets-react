@@ -1,11 +1,37 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import './App.css';
 import OneShot from "./sheets/OneShot";
-import Character from "./sheets/Character";
+import Character, {CharacterSheet, toCharacter} from "./sheets/Character";
+import Characters from "./tabs/Caracters";
+
+type AppState = {
+
+}
 
 function App() {
+
+    const [state, update] = useState({
+        oneShots: [],
+        characters:  [toCharacter({name: {value: 'Arthias'}})],
+        enemies: [],
+        places: [],
+        campaign: {}
+    });
+
+    function addCharacter(c: CharacterSheet) {
+        let characters = state.characters;
+        characters.push(c);
+        update({...state, characters: characters});
+    }
+
+    function removeCharacter(i: number) {
+        let characters = state.characters;
+        characters.splice(i, 1);
+        update({...state, characters: characters});
+    }
+
     return (
         <div className="App">
             <header className="KoTR:A Sheets">
@@ -16,7 +42,7 @@ function App() {
             <Tabs>
                 <TabList>
                     <Tab>OneShot</Tab>
-                    <Tab>Character</Tab>
+                    <Tab>Characters</Tab>
                     <Tab>Campaign</Tab>
                     <Tab>Place</Tab>
                 </TabList>
@@ -24,7 +50,7 @@ function App() {
                     <OneShot/>
                 </TabPanel>
                 <TabPanel>
-                    <Character/>
+                    <Characters characters={state.characters} add={addCharacter} remove={removeCharacter}/>
                 </TabPanel>
                 <TabPanel>
                     <p>TODO your campaign sheet here</p>
