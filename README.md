@@ -3,6 +3,8 @@ Sheets manager with recovarable state for "Knights of the Round: Accademy", the 
 
 Exemples of the sheets (oneshot, character, campaign, etc) are available [here](/docs/Curriculum_and_Sheets-ENG.pdf).
 
+Try it on GitHub Pages [here](https://mirrorshot.github.io/kotra-sheets-react/)
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
