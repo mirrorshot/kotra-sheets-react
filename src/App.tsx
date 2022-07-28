@@ -3,22 +3,37 @@ import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import './App.css';
 import OneShot from "./sheets/OneShot";
-import {CharacterSheet, toCharacter} from "./sheets/Character";
+import {CharacterSheet} from "./sheets/Character";
 import Characters from "./tabs/Caracters";
+import SaveLoad from "./sheets/components/SaveLoad";
+// @ts-ignore
+import {v4 as uuidv4} from 'uuid';
+
+type AppState = {
+    campaign: {},
+    characters: Array<CharacterSheet>,
+    oneShotCharacters: Array<any>,
+    places: Array<any>,
+    enemies: Array<any>
+};
 
 function App() {
 
-    const [state, update] = useState({
-        oneShots: [],
-        characters: [toCharacter({name: {value: 'Arthias'}})],
-        enemies: [],
-        places: [],
-        campaign: {}
-    });
+    function newState(): AppState {
+        return {
+            campaign: {},
+            characters: [],
+            oneShotCharacters: [],
+            places: [],
+            enemies: []
+        }
+    }
+
+    const [state, update] = useState(newState());
 
     function addCharacter(c: CharacterSheet) {
         let characters = state.characters;
-        characters.push(c);
+        characters[uuidv4()] = c;
         update({...state, characters: characters});
     }
 
@@ -38,6 +53,7 @@ function App() {
                                              target={'_blank'}
                                              rel={'noreferrer'}
                 >Knights of the Round: Academy</a></p>
+                <SaveLoad data={state} load={update}/>
             </header>
             <Tabs>
                 <TabList>
@@ -50,7 +66,9 @@ function App() {
                     <OneShot/>
                 </TabPanel>
                 <TabPanel>
-                    <Characters characters={state.characters} add={addCharacter} remove={removeCharacter}/>
+                    <Characters characters={state.characters}
+                                add={addCharacter}
+                                remove={removeCharacter}/>
                 </TabPanel>
                 <TabPanel>
                     <p>TODO your campaign sheet here</p>
