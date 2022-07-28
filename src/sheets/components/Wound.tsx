@@ -2,14 +2,21 @@ import {useState} from "react";
 import Settable from "./Settable";
 import './Wound.css';
 
+export type WoundInput = {
+    value: string,
+    wounded?: boolean | false
+} | string;
+
 export type WoundData = {
     value: string,
     wounded: boolean
 };
 
-export function toWound(w?: { value: string, wounded?: boolean }): WoundData {
+export function toWound(w?: WoundInput): WoundData {
     return w
-        ? {...w, wounded: w.wounded ? w.wounded : false}
+        ? typeof w === "string"
+            ? {value: w, wounded: false}
+            : {...w, wounded: w.wounded ? w.wounded : false}
         : {value: '', wounded: false}
 }
 
