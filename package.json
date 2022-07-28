@@ -2,7 +2,7 @@
   "name": "sheets",
   "version": "0.1.0",
   "private": true,
-  "homepage": "kotra-sheets-react",
+  "homepage": ".",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
