@@ -6,7 +6,7 @@ export default function Modal(props: {
     action?: string,
     apply: Function,
     abort: Function,
-    type?: 'text' | 'textarea' | undefined
+    type?: { mode: 'textarea', height?: number, width?: number } | { mode: 'text' }
 }) {
     const [state, update] = useState(props.value);
 
@@ -32,20 +32,30 @@ export default function Modal(props: {
     return (
         <div className={'Modal'}>
             <div className={'Content'}>
-                <input type={props.type ? props.type : 'text'}
-                       value={state}
-                       onChange={e => update(e.target.value)}
-                       autoFocus={true}
-                       onFocus={e => e.target.select()}
-                       onKeyDown={action}
-                />
+                {
+                    props.type && props.type.mode === 'textarea'
+                        ? <textarea value={state}
+                                    onChange={e => update(e.target.value)}
+                                    autoFocus={true}
+                                    onFocus={e => e.target.select()}
+                                    onKeyDown={action}
+                                    rows={props.type.height}
+                                    cols={props.type.width}/>
+                        : <input type={'text'}
+                                 value={state}
+                                 onChange={e => update(e.target.value)}
+                                 autoFocus={true}
+                                 onFocus={e => e.target.select()}
+                                 onKeyDown={action}/>
+                }
                 <p/>
                 {props.apply.toString() !== noop.toString()
                     ? <div>
-                        <button type={"submit"} className={'confirm'} onClick={apply}>{props.action ? props.action: 'Apply'}</button>
+                        <button type={"submit"} className={'confirm'}
+                                onClick={apply}>{props.action ? props.action : 'Apply'}</button>
                         <button className={'abort'} onClick={abort}>Cancel</button>
                     </div>
-                    : <button onClick={abort}>{props.action ? props.action: 'Done'}</button>}
+                    : <button onClick={abort}>{props.action ? props.action : 'Done'}</button>}
             </div>
         </div>
     );

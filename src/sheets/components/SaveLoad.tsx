@@ -18,11 +18,21 @@ export default function SaveLoad(props: {
     }
 
     function load() {
-        update({content: '', action: (v: string) => props.load(Converter.extract(v)), visible: true, actionLabel: 'Load'});
+        update({
+            content: '',
+            action: (v: string) => props.load(Converter.extract(v)),
+            visible: true,
+            actionLabel: 'Load'
+        });
     }
 
     function fromJson() {
-        update({content: '', action: (v: string) => props.load(Converter.fromJson(v)), visible: true, actionLabel: 'Load'});
+        update({
+            content: '',
+            action: (v: string) => props.load(Converter.fromJson(v)),
+            visible: true,
+            actionLabel: 'Load'
+        });
     }
 
     function abort(): void {
@@ -32,11 +42,11 @@ export default function SaveLoad(props: {
     return (
         <div>
             {state.visible
-                ? <Modal type={'textarea'}
-                    value={state.content}
-                     action={state.actionLabel}
-                    apply={state.action}
-                    abort={abort}/>
+                ? <Modal type={{mode: 'textarea', height: 25, width: 50}}
+                         value={state.content}
+                         action={state.actionLabel}
+                         apply={state.action}
+                         abort={abort}/>
                 : <div>
                     <button onClick={save}>Save</button>
                     <button onClick={toJson}>To JSON</button>

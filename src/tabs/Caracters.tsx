@@ -29,8 +29,7 @@ export default function Characters(props: CharactersProps) {
     return (
         <div>
             {visible
-                ? <Modal type={'text'}
-                         value={'Name'}
+                ? <Modal value={'Name'}
                          action={'Create'}
                          apply={addCharacter}
                          abort={() => commute(false)}/>
