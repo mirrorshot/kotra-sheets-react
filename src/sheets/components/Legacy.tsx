@@ -1,10 +1,12 @@
 import Settable from "./Settable";
 import './Legacy.css';
 
-export default function Legacy(props: {
+export type LegacyData = {
     legacy: string,
-    setLegacy: Function
-}) {
+    setLegacy: (l: string) => void
+};
+
+export default function Legacy(props: LegacyData) {
     return (
         <div className={'Legacy'}>
             <Settable

@@ -1,10 +1,12 @@
 import Settable from "./Settable";
 import './Flaw.css';
 
-function Flaw(props: {
+export type FlawData = {
     flaw: string,
-    updateFlaw: Function
-}) {
+    updateFlaw: (f: string) => void
+};
+
+export default function Flaw(props: FlawData) {
 
     return (
         <div className={'Flaw'}>
@@ -12,5 +14,3 @@ function Flaw(props: {
         </div>
     );
 }
-
-export default Flaw;

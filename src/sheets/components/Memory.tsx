@@ -21,21 +21,21 @@ export type ExtraMemoryData = MemoryData | undefined;
 export default function Memory(props: {
     memory: ExtraMemoryData,
     label?: string,
-    setMemory: Function
+    setMemory: (m: MemoryData) => void
 }) {
 
     return (
         <div className={'Memory'}>
-            <Settable label={props.label??'Memory'}
-                      value={props.memory ? props.memory.value : ''}
-                      setValue={(v: string) => props.setMemory({...props.memory, value: v})}/>
+            <Settable label={props.label ?? 'Memory'}
+                      value={props.memory?.value ?? ''}
+                      setValue={(v: string) => props.setMemory({value: v, consumed: props.memory?.consumed ?? false})}/>
             <input type={'checkbox'}
                    disabled={props.memory === undefined}
                    checked={props.memory?.consumed}
-                   onClick={() => props.setMemory({
-                       ...props.memory,
-                       consumed: props.memory ? !props.memory.consumed : false
-                   })}/>
+                   onClick={() => props.memory ? props.setMemory({
+                       value: props.memory.value,
+                       consumed: !(props.memory?.consumed ?? true)
+                   }) : null}/>
         </div>
     );
 };

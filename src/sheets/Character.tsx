@@ -19,38 +19,26 @@ export function toCharacter(input: CharacterSheetInput): CharacterSheet {
         core: toWound(input.core),
         lineage: toWound(input.lineage),
         soul: toWound(input.soul),
-        traits: input.traits
-            ? [...input.traits].fill('', input.traits.length, 10)
-            : Array(10).fill(''),
-        legacy: input.legacy
-            ? input.legacy
-            : '',
-        techniques: input.techniques
-            ? [...input.techniques].fill('', input.techniques.length, 8)
-            : Array(8).fill(''),
-        memories: input.memories
-            ? input.memories.map(toExtraMemory)
-            : Array(3).fill(undefined),
-        jobs: input.jobs
-            ? input.jobs
-            : ['', ''],
+        traits: [...input.traits ?? Array(10)]
+            .fill('', input.traits?.length ?? 0, 10),
+        legacy: input.legacy ?? '',
+        techniques: [...input.techniques ?? Array(8)]
+            .fill('', input.techniques?.length ?? 0, 8),
+        memories: [...input.memories ?? Array(3)]
+            .fill(undefined, input.memories?.length ?? 0, 3)
+            .map(toExtraMemory),
+        jobs: [...input.jobs ?? Array(2)]
+            .fill('', input.jobs?.length ?? 0, 2),
         knight: toWound(input.knight),
         frame: toWound(input.frame),
-        abilities: input.abilities
-            ? input.abilities
-            : ['', ''],
-        affinities: input.affinities
-            ? [...input.affinities].fill({value: '', score: 0}, input.affinities.length, 2)
-            : Array(2).fill({
-                value: '',
-                score: 0
-            }),
-        limit: input.limit
-            ? {
-                score: input.limit.score,
-                overdrive: input.limit.overdrive !== undefined ? input.limit.overdrive : input.limit.score > 8
-            }
-            : {score: 0, overdrive: false},
+        abilities: [...input.abilities ?? Array(2)]
+            .fill('', input.abilities?.length ?? 0, 2),
+        affinities: [...input.affinities ?? Array(2)]
+            .fill({value: '', score: 0}, input.affinities?.length ?? 0, 2),
+        limit: {
+            score: input.limit?.score ?? 0,
+            overdrive: input.limit?.overdrive !== undefined ? input.limit.overdrive : ((input.limit?.score ?? 0) > 8)
+        },
         itemLeft: input.itemLeft ? input.itemLeft : '',
         itemRight: input.itemRight ? input.itemRight : '',
         flaw: input.flaw ? input.flaw : '',
@@ -111,8 +99,8 @@ export default function Character(props: CharacterSheetInput) {
         update({...state, traits: traits});
     }
 
-    function setName(v: string) {
-        update({...state, name: toMemory({...state.name, value: v})});
+    function setName(name: MemoryData) {
+        update({...state, name: toMemory({...state.name, value: name.value})});
     }
 
     function setCore(v: string) {

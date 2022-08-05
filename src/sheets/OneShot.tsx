@@ -54,68 +54,44 @@ export type OneShotInput = {
     sheet?: OneShotSheet
 };
 
-export function toOneShotCharacter(input?: OneShotInput): OneShotSheet {
-    return input
-        ? {
-            name: toMemory(input.name),
-            core: toWound(input.core),
-            lineage: toWound(input.lineage),
-            soul: toWound(input.soul),
-            traits: input.traits
-                ? [...input.traits].fill('', input.traits.length, 4)
-                : Array(4).fill(''),
-            legacy: input.legacy ? input.legacy : '',
-            techniques: input.techniques ?? ['', '', ''],
-            job: input.job ?? '',
-            knight: toWound(input.knight),
-            frame: toWound(input.frame),
-            ability: input.ability ? input.ability : '',
-            affinity: input.affinity
-                ? {value: input.affinity.value, score: input.affinity.score ? input.affinity.score : 0}
-                : {value: '', score: 0},
-            limit: input.limit
-                ? {
-                    score: input.limit.score,
-                    overdrive: input.limit.overdrive !== undefined ? input.limit.overdrive : input.limit.score > 8
-                }
-                : {score: 0, overdrive: false},
-            itemLeft: input.itemLeft ? input.itemLeft : '',
-            itemRight: input.itemRight ? input.itemRight : '',
-            flaw: input.flaw ? input.flaw : '',
-            nemesis: input.nemesis ? input.nemesis : ''
-        }
-        : {
-            name: {value: '', consumed: false},
-            core: {value: '', wounded: false},
-            lineage: {value: '', wounded: false},
-            soul: {value: '', wounded: false},
-            traits: ['', '', '', ''],
-            legacy: '',
-            techniques: ['', '', ''],
-            job: '',
-            knight: {value: '', wounded: false},
-            frame: {value: '', wounded: false},
-            ability: '',
-            affinity: {value: '', score: 0},
-            limit: {score: 0, overdrive: false},
-            itemLeft: '',
-            itemRight: '',
-            flaw: '',
-            nemesis: ''
-        }
+export function toOneShotCharacter(input: OneShotInput): OneShotSheet {
+    return {
+        name: toMemory(input.name),
+        core: toWound(input.core),
+        lineage: toWound(input.lineage),
+        soul: toWound(input.soul),
+        traits: [...input.traits ?? Array(4)]
+            .fill('', input.traits?.length ?? 0, 4),
+        legacy: input.legacy ?? '',
+        techniques:  [...input.techniques ?? Array(3)]
+            .fill('', input.techniques?.length ?? 0, 3),
+        job: input.job ?? '',
+        knight: toWound(input.knight),
+        frame: toWound(input.frame),
+        ability: input.ability ?? '',
+        affinity: {...(input.affinity ?? {value: ''}), score: input.affinity?.score ?? 0},
+        limit: {
+            score: input.limit?.score ?? 0,
+            overdrive: input.limit?.overdrive !== undefined ? input.limit.overdrive : ((input.limit?.score ?? 0) > 8)
+        },
+        itemLeft: input.itemLeft ?? '',
+        itemRight: input.itemRight ?? '',
+        flaw: input.flaw ?? '',
+        nemesis: input.nemesis ?? ''
+    };
 }
 
 export default function OneShot(props: OneShotInput) {
 
-    const [state, update] = useState(props.sheet ? props.sheet : toOneShotCharacter(props));
+    const [state, update] = useState(props.sheet ?? toOneShotCharacter(props));
 
     function setTrait(value: string, index: number) {
         state.traits[index] = value;
         update(state);
     }
 
-    function setName(v: string) {
-        update({...state, name: {...state.name, value: v}});
+    function setName(name: MemoryData) {
+        update({...state, name: {...state.name, value: name.value}});
     }
 
     function setCore(v: string) {

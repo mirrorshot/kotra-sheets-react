@@ -3,7 +3,7 @@ import './Nemesis.css';
 
 function Nemesis(props: {
     nemesis: string,
-    updateNemesis: Function
+    updateNemesis: (n: string) => void
 }) {
     return (
         <div className={'Nemesis'}>

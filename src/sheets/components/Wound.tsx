@@ -16,15 +16,15 @@ export function toWound(w?: WoundInput): WoundData {
     return w
         ? typeof w === "string"
             ? {value: w, wounded: false}
-            : {...w, wounded: w.wounded ? w.wounded : false}
+            : {...w, wounded: w.wounded ?? false}
         : {value: '', wounded: false}
 }
 
 export default function Wound(props: {
     label: string,
     wound: WoundData,
-    setWound: Function,
-    setWounded: Function
+    setWound: (w: string) => void,
+    setWounded: (w: boolean) => void
 }) {
 
     const [wound, updateWound] = useState({wound: props.wound.value, wounded: props.wound.wounded})

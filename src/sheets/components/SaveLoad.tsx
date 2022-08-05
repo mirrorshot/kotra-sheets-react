@@ -1,37 +1,45 @@
 import React, {useState} from "react";
 import Converter from "../../Converter";
-import Modal, {noop} from "./Modal";
+import Modal from "./Modal";
 
 export default function SaveLoad(props: {
     data: any,
-    load: Function
+    load: (v: any) => void
 }) {
 
-    const [state, update] = useState({content: '', visible: false, action: noop, actionLabel: 'Done'});
+    const [state, update] = useState({content: '', visible: false, action: asInteraction()});
+
+    function asInteraction(
+        label?: string,
+        action?: (v: string) => void
+    ) {
+        return {
+            actionLabel: label ?? 'Done',
+            action: action
+        }
+    }
 
     function save() {
-        update({content: Converter.compress(props.data), visible: true, action: noop, actionLabel: 'Done'});
+        update({content: Converter.compress(props.data), visible: true, action: asInteraction()});
     }
 
     function toJson() {
-        update({content: Converter.toJson(props.data), visible: true, action: noop, actionLabel: 'Done'});
+        update({content: Converter.toJson(props.data), visible: true, action: asInteraction()});
     }
 
     function load() {
         update({
             content: '',
-            action: (v: string) => props.load(Converter.extract(v)),
             visible: true,
-            actionLabel: 'Load'
+            action: asInteraction('Load', (v: string) => props.load(Converter.extract(v)))
         });
     }
 
     function fromJson() {
         update({
             content: '',
-            action: (v: string) => props.load(Converter.fromJson(v)),
             visible: true,
-            actionLabel: 'Load'
+            action: asInteraction('Load', (v: string) => props.load(Converter.fromJson(v)))
         });
     }
 
@@ -43,10 +51,10 @@ export default function SaveLoad(props: {
         <div>
             {state.visible
                 ? <Modal label={'State'}
-                         type={{mode: 'textarea', height: 25, width: 50}}
+                         type={{mode: 'textarea', height: 25, width: 50}} // todo dynamic size
                          value={state.content}
-                         action={state.actionLabel}
-                         apply={state.action}
+                         action={state.action.actionLabel}
+                         apply={state.action.action}
                          abort={abort}/>
                 : <div>
                     <button onClick={save}>Save</button>

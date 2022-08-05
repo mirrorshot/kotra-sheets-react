@@ -7,7 +7,7 @@ import Modal from "./Modal";
 export default function Settable(props: {
     label: string,
     value: string,
-    setValue: Function,
+    setValue: (v: any) => void,
     disabled?: boolean
 }) {
     const [visible, update] = useState(false);

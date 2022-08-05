@@ -3,7 +3,7 @@ export default function Score(props: {
     step: number,
     min: number,
     max: number,
-    setValue: Function
+    setValue: (s: number) => void
 }) {
 
     function update(s: number) {

@@ -5,8 +5,8 @@ export default function Modal(props: {
     label: string,
     value: string,
     action?: string,
-    apply: Function,
-    abort: Function,
+    apply?: (v: string) => void,
+    abort: () => void,
     type?: { mode: 'textarea', height?: number, width?: number } | { mode: 'text' }
 }) {
     const [state, update] = useState(props.value);
@@ -51,17 +51,13 @@ export default function Modal(props: {
                                  onKeyDown={action}/>
                 }
                 <p/>
-                {props.apply.toString() !== noop.toString()
+                {props.apply
                     ? <div>
-                        <button type={"submit"} className={'confirm'}
-                                onClick={apply}>{props.action ? props.action : 'Apply'}</button>
+                        <button className={'confirm'} onClick={apply}>{props.action ?? 'Apply'}</button>
                         <button className={'abort'} onClick={abort}>Cancel</button>
                     </div>
-                    : <button onClick={abort}>{props.action ? props.action : 'Done'}</button>}
+                    : <button onClick={abort}>{props.action ?? 'Done'}</button>}
             </div>
         </div>
     );
 };
-
-export function noop(_?: any | undefined) {
-}

@@ -1,10 +1,12 @@
 import Settable from "./Settable";
 import './Job.css';
 
-function Job(props: {
+export type JobData = {
     job: string,
-    updateJob: Function
-}) {
+    updateJob: (j: string) => void
+};
+
+export default function Job(props: JobData) {
 
     return (
         <div className={'Job'}>
@@ -15,5 +17,3 @@ function Job(props: {
         </div>
     );
 }
-
-export default Job;

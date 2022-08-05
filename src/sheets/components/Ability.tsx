@@ -3,7 +3,7 @@ import './Ability.css';
 
 export default function Ability(props: {
     value: string,
-    setValue: Function
+    setValue: (a: string) => void
 }) {
 
     return (
