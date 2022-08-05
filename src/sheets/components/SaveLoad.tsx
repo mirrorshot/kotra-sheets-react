@@ -42,7 +42,8 @@ export default function SaveLoad(props: {
     return (
         <div>
             {state.visible
-                ? <Modal type={{mode: 'textarea', height: 25, width: 50}}
+                ? <Modal label={'State'}
+                         type={{mode: 'textarea', height: 25, width: 50}}
                          value={state.content}
                          action={state.actionLabel}
                          apply={state.action}

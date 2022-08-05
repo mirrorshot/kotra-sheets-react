@@ -1,10 +1,13 @@
 import Settable from "./Settable";
 import './Trait.css';
 
-export default function Trait(props: {
-    trait: string,
-    setValue: Function
-}) {
+export interface TraitConfig {
+    trait: string;
+    setValue(value: string): void;
+    isAvailable?(): boolean;
+}
+
+export default function Trait(props: TraitConfig) {
 
     return (
         <div className={'Trait'}>
@@ -12,6 +15,7 @@ export default function Trait(props: {
                 label={'Trait'}
                 value={props.trait}
                 setValue={props.setValue}
+                disabled={props.isAvailable ? !props.isAvailable() : false}
             />
         </div>
     );

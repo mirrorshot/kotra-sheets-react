@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import Wound from "./components/Wound";
+import Wound, {toWound, WoundData, WoundInput} from "./components/Wound";
 import Job from "./components/Job";
 import Affinity from "./components/Affinity";
 import Trait from "./components/Trait";
@@ -8,31 +8,105 @@ import Item from "./components/Item";
 import Nemesis from "./components/Nemesis";
 import Limit from "./components/Limit";
 import Legacy from "./components/Legacy";
-import SaveLoad from "./components/SaveLoad";
 import Technique from "./components/Technique";
 import Ability from "./components/Ability";
+import SaveLoad from "./components/SaveLoad";
 
-export default function OneShot() {
+export type OneShotSheet = {
+    name: WoundData,
+    core: WoundData,
+    lineage: WoundData,
+    soul: WoundData,
+    traits: Array<string>,
+    legacy: string,
+    techniques: Array<string>,
+    job: string,
+    knight: WoundData,
+    frame: WoundData,
+    ability: string,
+    affinity: { value: string, score: number },
+    limit: { score: number, overdrive: boolean },
+    itemLeft: string,
+    itemRight: string,
+    flaw: string,
+    nemesis: string
+};
 
-    const [state, update] = useState({
-        name: {value: '', wounded: false},
-        core: {value: '', wounded: false},
-        lineage: {value: '', wounded: false},
-        soul: {value: '', wounded: false},
-        traits: ['', '', '', ''],
-        legacy: '',
-        techniques: ['', '', ''],
-        job: '',
-        knight: {value: '', wounded: false},
-        frame: {value: '', wounded: false},
-        ability: '',
-        affinity: {value: '', score: 0},
-        limit: {score: 0, overdrive: false},
-        itemLeft: '',
-        itemRight: '',
-        flaw: '',
-        nemesis: ''
-    });
+export type OneShotInput = {
+    name?: WoundInput,
+    core?: WoundInput,
+    lineage?: WoundInput,
+    soul?: WoundInput,
+    traits?: Array<string>,
+    legacy?: string,
+    techniques?: Array<string>,
+    job?: string,
+    knight?: WoundInput,
+    frame?: WoundInput,
+    ability?: string,
+    affinity?: { value: string, score?: number },
+    limit?: { score: number, overdrive?: boolean },
+    itemLeft?: string,
+    itemRight?: string,
+    flaw?: string,
+    nemesis?: string,
+    sheet?: OneShotSheet
+};
+
+export function toOneShotCharacter(input?: OneShotInput): OneShotSheet {
+    return input
+        ? {
+            name: toWound(input.name),
+            core: toWound(input.core),
+            lineage: toWound(input.lineage),
+            soul: toWound(input.soul),
+            traits: input.traits
+                ? [...input.traits].fill('', input.traits.length, 4)
+                : Array(4).fill(''),
+            legacy: input.legacy ? input.legacy : '',
+            techniques: input.techniques ?? ['', '', ''],
+            job: input.job ?? '',
+            knight: toWound(input.knight),
+            frame: toWound(input.frame),
+            ability: input.ability ? input.ability : '',
+            affinity: input.affinity
+                ? {value: input.affinity.value, score: input.affinity.score ? input.affinity.score : 0}
+                : {value: '', score: 0},
+            limit: input.limit
+                ? {
+                    score: input.limit.score,
+                    overdrive: input.limit.overdrive !== undefined ? input.limit.overdrive : input.limit.score > 8
+                }
+                : {score: 0, overdrive: false},
+            itemLeft: input.itemLeft ? input.itemLeft : '',
+            itemRight: input.itemRight ? input.itemRight : '',
+            flaw: input.flaw ? input.flaw : '',
+            nemesis: input.nemesis ? input.nemesis : ''
+        }
+        : {
+            name: {value: '', wounded: false},
+            core: {value: '', wounded: false},
+            lineage: {value: '', wounded: false},
+            soul: {value: '', wounded: false},
+            traits: ['', '', '', ''],
+            legacy: '',
+            techniques: ['', '', ''],
+            job: '',
+            knight: {value: '', wounded: false},
+            frame: {value: '', wounded: false},
+            ability: '',
+            affinity: {value: '', score: 0},
+            limit: {score: 0, overdrive: false},
+            itemLeft: '',
+            itemRight: '',
+            flaw: '',
+            nemesis: ''
+        }
+}
+
+export default function OneShot(props: OneShotInput) {
+
+    const [state, update] = useState(props.sheet ? props.sheet : toOneShotCharacter(props));
 
     function setTrait(value: string, index: number) {
         state.traits[index] = value;
@@ -110,14 +184,14 @@ export default function OneShot() {
     return (
         <div className="OneShot">
             <SaveLoad data={state} load={update}/>
-            <Wound label='Name' wound={state.name} setWound={setName} setWounded={woundName}/>
-            <Wound label='Core' wound={state.core} setWound={setCore} setWounded={woundCore}/>
-            <Wound label='Lineage' wound={state.lineage} setWound={setLineage} setWounded={woundLineage}/>
-            <Wound label='Soul' wound={state.soul} setWound={setSoul} setWounded={woundSoul}/>
+            <Wound label={'Name'} wound={state.name} setWound={setName} setWounded={woundName}/>
+            <Wound label={'Core'} wound={state.core} setWound={setCore} setWounded={woundCore}/>
+            <Wound label={'Lineage'} wound={state.lineage} setWound={setLineage} setWounded={woundLineage}/>
+            <Wound label={'Soul'} wound={state.soul} setWound={setSoul} setWounded={woundSoul}/>
             <Job job={state.job} updateJob={(j: string) => update({...state, job: j})}/>
             <Wound label={'Knight'} wound={state.knight} setWound={setKnight} setWounded={woundKnight}/>
             <Wound label={'Frame'} wound={state.frame} setWound={setFrame} setWounded={woundFrame}/>
-            <Ability value={state.ability} setValue={(v: string) => update({...state, ability: v})} />
+            <Ability value={state.ability} setValue={(v: string) => update({...state, ability: v})}/>
             <Affinity affinity={state.affinity} updateAffinity={setAffinity} updateScore={setAffinityScore}/>
             <Trait trait={state.traits[0]} setValue={(v: string) => setTrait(v, 0)}/>
             <Trait trait={state.traits[1]} setValue={(v: string) => setTrait(v, 1)}/>

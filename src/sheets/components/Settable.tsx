@@ -7,7 +7,8 @@ import Modal from "./Modal";
 export default function Settable(props: {
     label: string,
     value: string,
-    setValue: Function
+    setValue: Function,
+    disabled?: boolean
 }) {
     const [visible, update] = useState(false);
 
@@ -27,7 +28,11 @@ export default function Settable(props: {
     return (
         <div className={'Settable'} onDoubleClick={showInput}>
             {visible
-                ? <Modal action={'Save'} value={props.value} apply={setValue} abort={abort}/>
+                ? <Modal label={props.label}
+                         action={'Save'}
+                         value={props.value}
+                         apply={setValue}
+                         abort={abort}/>
                 : <p className={'Settable'}>{props.value}</p>}
             <p>{props.label}</p>
         </div>

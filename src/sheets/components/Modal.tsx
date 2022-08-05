@@ -2,6 +2,7 @@ import {useState} from "react";
 import './Modal.css';
 
 export default function Modal(props: {
+    label: string,
     value: string,
     action?: string,
     apply: Function,
@@ -39,10 +40,11 @@ export default function Modal(props: {
                                     autoFocus={true}
                                     onFocus={e => e.target.select()}
                                     onKeyDown={action}
-                                    rows={props.type.height}
-                                    cols={props.type.width}/>
+                                    rows={props.type.height ?? 1}
+                                    cols={props.type.width ?? 30}/>
                         : <input type={'text'}
                                  value={state}
+                                 placeholder={props.label}
                                  onChange={e => update(e.target.value)}
                                  autoFocus={true}
                                  onFocus={e => e.target.select()}

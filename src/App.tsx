@@ -2,17 +2,18 @@ import React, {useState} from 'react';
 import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import './App.css';
-import OneShot from "./sheets/OneShot";
+import {OneShotSheet} from "./sheets/OneShot";
 import {CharacterSheet} from "./sheets/Character";
 import Characters from "./tabs/Caracters";
 import SaveLoad from "./sheets/components/SaveLoad";
 // @ts-ignore
 import {v4 as uuidv4} from 'uuid';
+import OneShots from "./tabs/OneShots";
 
 type AppState = {
     campaign: {},
     characters: Array<CharacterSheet>,
-    oneShotCharacters: Array<any>,
+    oneShotCharacters: Array<OneShotSheet>,
     places: Array<any>,
     enemies: Array<any>
 };
@@ -43,6 +44,18 @@ function App() {
         update({...state, characters: characters});
     }
 
+    function addOneShotCharacter(c: OneShotSheet) {
+        let characters = state.oneShotCharacters;
+        characters[uuidv4()] = c;
+        update({...state, oneShotCharacters: characters});
+    }
+
+    function removeOneShotCharacter(i: number) {
+        let characters = state.oneShotCharacters;
+        characters.splice(i, 1);
+        update({...state, oneShotCharacters: characters});
+    }
+
     return (
         <div className="App">
             <header className="KoTR:A Sheets">
@@ -63,7 +76,9 @@ function App() {
                     <Tab>Place</Tab>
                 </TabList>
                 <TabPanel>
-                    <OneShot/>
+                    <OneShots characters={state.oneShotCharacters}
+                              add={addOneShotCharacter}
+                              remove={removeOneShotCharacter}/>
                 </TabPanel>
                 <TabPanel>
                     <Characters characters={state.characters}

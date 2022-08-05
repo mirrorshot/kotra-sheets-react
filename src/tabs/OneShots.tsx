@@ -1,15 +1,15 @@
 import {Tab, TabList, TabPanel, Tabs} from "react-tabs";
-import Character, {CharacterSheet, toCharacter} from "../sheets/Character";
 import {useState} from "react";
 import Modal from "../sheets/components/Modal";
+import OneShot, {OneShotSheet, toOneShotCharacter} from "../sheets/OneShot";
 
-export type CharactersProps = {
-    characters: Array<CharacterSheet>,
+export type OneShotsProps = {
+    characters: Array<OneShotSheet>,
     add: Function,
     remove: Function
 };
 
-export default function Characters(props: CharactersProps) {
+export default function OneShots(props: OneShotsProps) {
 
     const [visible, commute] = useState(false);
 
@@ -18,7 +18,7 @@ export default function Characters(props: CharactersProps) {
     }
 
     function addCharacter(name: string) {
-        props.characters.push(toCharacter({name: {value: name}}));
+        props.characters.push(toOneShotCharacter({name: {value: name}}));
         commute(false);
     }
 
@@ -45,7 +45,7 @@ export default function Characters(props: CharactersProps) {
                     <button onClick={createCharacter}>+</button>
                 </TabList>
                 {[...props.characters]
-                    .map((c, i) => <TabPanel key={i}><Character key={i} sheet={c}/></TabPanel>)}
+                    .map((c, i) => <TabPanel key={i}><OneShot key={i} sheet={c}/></TabPanel>)}
             </Tabs>
         </div>
     );
