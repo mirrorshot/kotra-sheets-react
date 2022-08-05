@@ -7,7 +7,7 @@ import Flaw from "./components/Flaw";
 import Item from "./components/Item";
 import Nemesis from "./components/Nemesis";
 import Limit from "./components/Limit";
-import Memory, {MemoryData, toMemory} from "./components/Memory";
+import Memory, {ExtraMemoryData, MemoryData, toExtraMemory, toMemory} from "./components/Memory";
 import SaveLoad from "./components/SaveLoad";
 import Legacy from "./components/Legacy";
 import Technique from "./components/Technique";
@@ -15,7 +15,7 @@ import Ability from "./components/Ability";
 
 export function toCharacter(input: CharacterSheetInput): CharacterSheet {
     return {
-        name: toWound(input.name),
+        name: toMemory(input.name),
         core: toWound(input.core),
         lineage: toWound(input.lineage),
         soul: toWound(input.soul),
@@ -29,7 +29,7 @@ export function toCharacter(input: CharacterSheetInput): CharacterSheet {
             ? [...input.techniques].fill('', input.techniques.length, 8)
             : Array(8).fill(''),
         memories: input.memories
-            ? input.memories.map(toMemory)
+            ? input.memories.map(toExtraMemory)
             : Array(3).fill(undefined),
         jobs: input.jobs
             ? input.jobs
@@ -59,7 +59,7 @@ export function toCharacter(input: CharacterSheetInput): CharacterSheet {
 }
 
 export type CharacterSheetInput = {
-    name?: { value: string, wounded?: boolean | false } | { value: '', wounded: false },
+    name?: { value: string, consumed?: boolean | false } | { value: '', consumed: false },
     core?: { value: string, wounded?: boolean | false } | { value: '', wounded: false },
     lineage?: { value: string, wounded?: boolean | false } | { value: '', wounded: false },
     soul?: { value: string, wounded?: boolean | false } | { value: '', wounded: false },
@@ -81,14 +81,14 @@ export type CharacterSheetInput = {
 };
 
 export type CharacterSheet = {
-    name: WoundData,
+    name: MemoryData,
     core: WoundData,
     lineage: WoundData,
     soul: WoundData,
     traits: Array<string>,
     legacy: string,
     techniques: Array<string>,
-    memories: Array<MemoryData>,
+    memories: Array<ExtraMemoryData>,
     jobs: Array<string> | [],
     knight: WoundData,
     frame: WoundData,
@@ -103,7 +103,7 @@ export type CharacterSheet = {
 
 export default function Character(props: CharacterSheetInput) {
 
-    const [state, update] = useState(props.sheet ? props.sheet : toCharacter(props));
+    const [state, update] = useState(props.sheet ?? toCharacter(props));
 
     function setTrait(value: string, index: number) {
         const traits = state.traits;
@@ -112,11 +112,7 @@ export default function Character(props: CharacterSheetInput) {
     }
 
     function setName(v: string) {
-        update({...state, name: {...state.name, value: v}});
-    }
-
-    function woundName(w: boolean) {
-        update({...state, name: {...state.name, wounded: w}});
+        update({...state, name: toMemory({...state.name, value: v})});
     }
 
     function setCore(v: string) {
@@ -207,7 +203,7 @@ export default function Character(props: CharacterSheetInput) {
     return (
         <div className="OneShot">
             <SaveLoad data={state} load={load}/>
-            <Wound label='Name' wound={state.name} setWound={setName} setWounded={woundName}/>
+            <Memory label='Name' memory={state.name} setMemory={setName}/>
             <Wound label='Core' wound={state.core} setWound={setCore} setWounded={woundCore}/>
             <Wound label='Lineage' wound={state.lineage} setWound={setLineage} setWounded={woundLineage}/>
             <Wound label='Soul' wound={state.soul} setWound={setSoul} setWounded={woundSoul}/>

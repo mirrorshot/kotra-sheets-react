@@ -39,7 +39,7 @@ export default function Characters(props: CharactersProps) {
                 <TabList>
                     {[...props.characters]
                         .map((c, i) => <Tab key={i}>
-                            {c.name.value}
+                            {c.name?.value}
                             <button onClick={() => removeCharacter(i)}>x</button>
                         </Tab>)}
                     <button onClick={createCharacter}>+</button>

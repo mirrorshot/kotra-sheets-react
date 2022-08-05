@@ -11,9 +11,10 @@ import Legacy from "./components/Legacy";
 import Technique from "./components/Technique";
 import Ability from "./components/Ability";
 import SaveLoad from "./components/SaveLoad";
+import Memory, {MemoryData, toMemory} from "./components/Memory";
 
 export type OneShotSheet = {
-    name: WoundData,
+    name: MemoryData,
     core: WoundData,
     lineage: WoundData,
     soul: WoundData,
@@ -33,7 +34,7 @@ export type OneShotSheet = {
 };
 
 export type OneShotInput = {
-    name?: WoundInput,
+    name?: { value: string, consumed?: boolean },
     core?: WoundInput,
     lineage?: WoundInput,
     soul?: WoundInput,
@@ -56,7 +57,7 @@ export type OneShotInput = {
 export function toOneShotCharacter(input?: OneShotInput): OneShotSheet {
     return input
         ? {
-            name: toWound(input.name),
+            name: toMemory(input.name),
             core: toWound(input.core),
             lineage: toWound(input.lineage),
             soul: toWound(input.soul),
@@ -84,7 +85,7 @@ export function toOneShotCharacter(input?: OneShotInput): OneShotSheet {
             nemesis: input.nemesis ? input.nemesis : ''
         }
         : {
-            name: {value: '', wounded: false},
+            name: {value: '', consumed: false},
             core: {value: '', wounded: false},
             lineage: {value: '', wounded: false},
             soul: {value: '', wounded: false},
@@ -115,10 +116,6 @@ export default function OneShot(props: OneShotInput) {
 
     function setName(v: string) {
         update({...state, name: {...state.name, value: v}});
-    }
-
-    function woundName(w: boolean) {
-        update({...state, name: {...state.name, wounded: w}});
     }
 
     function setCore(v: string) {
@@ -184,7 +181,7 @@ export default function OneShot(props: OneShotInput) {
     return (
         <div className="OneShot">
             <SaveLoad data={state} load={update}/>
-            <Wound label={'Name'} wound={state.name} setWound={setName} setWounded={woundName}/>
+            <Memory label={'Name'} memory={state.name} setMemory={setName}/>
             <Wound label={'Core'} wound={state.core} setWound={setCore} setWounded={woundCore}/>
             <Wound label={'Lineage'} wound={state.lineage} setWound={setLineage} setWounded={woundLineage}/>
             <Wound label={'Soul'} wound={state.soul} setWound={setSoul} setWounded={woundSoul}/>

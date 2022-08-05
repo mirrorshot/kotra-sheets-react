@@ -2,24 +2,31 @@ import Settable from "./Settable";
 import './Memory.css';
 
 export function toMemory(m?: { value: string, consumed?: boolean }): MemoryData {
+    return {value: m?.value ?? '', consumed: m?.consumed ?? false};
+}
+
+export function toExtraMemory(m?: { value: string, consumed?: boolean }): ExtraMemoryData {
     return m
-        ? {...m, consumed: m.consumed !== undefined ? m.consumed : false}
+        ? {...m, consumed: m.consumed ?? false}
         : undefined;
 }
 
 export type MemoryData = {
     value: string,
     consumed: boolean
-} | undefined;
+};
+
+export type ExtraMemoryData = MemoryData | undefined;
 
 export default function Memory(props: {
-    memory: MemoryData,
+    memory: ExtraMemoryData,
+    label?: string,
     setMemory: Function
 }) {
 
     return (
         <div className={'Memory'}>
-            <Settable label={'Memory'}
+            <Settable label={props.label??'Memory'}
                       value={props.memory ? props.memory.value : ''}
                       setValue={(v: string) => props.setMemory({...props.memory, value: v})}/>
             <input type={'checkbox'}
